@@ -30,7 +30,7 @@ def stop():
 
 def steer(angle=0):
     global Steer
-    Steer = float(angle)
+    Steer = round(float(angle), 2)
 
 
 def acceleration(power=0):

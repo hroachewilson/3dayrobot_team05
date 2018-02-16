@@ -17,17 +17,16 @@ def follow_point(point):
     while not gps_success:
         gps_success, coords = gps.getGPS()
 
-    while lpid.coord_dist_meters(coords[0], coords[1], point[0], point[1]) < 10:
+    while bearings.coord_dist_meters(coords[0], coords[1], point[0], point[1]) > 10:
         # Get current coords long and lat
         # Calculate bearing
-        coords = [coords.latitude, coords.longitude]
         coordsDirection = bearings.coord_bearing_degrees(coords[0], coords[1],      #Our location
                                                          point[0], point[1])   # waypoint location
         coordsError = coordsDirection - imu.getCompass()
         car.steer(coordsError)
         car.send()
 
-        time.sleep(0.001)
+        time.sleep(0.1)
         
 
 if __name__ == '__main__':

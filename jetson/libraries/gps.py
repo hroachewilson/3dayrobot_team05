@@ -33,7 +33,7 @@ def getGPS(NUM_SATS_NEEDED=4):
             return False, msg
         try:
             if int(msg.num_sats) >= NUM_SATS_NEEDED:
-                return True, msg
+                return True, [msg.latitude, msg.longitude]
             else:
                 return False, msg
         except:

@@ -56,6 +56,6 @@ def coord_dist_meters(lat1, lon1, lat2, lon2):
     dlat = lat2 - lat1
     a = math.sin(dlat/2)**2 + math.cos(lat1) * \
         math.cos(lat2) * math.sin(dlon/2)**2
-    c = 2 * math.asin(sqrt(a))
+    c = 2 * math.asin(math.sqrt(a))
     r = 6371000  # Radius of earth in meters. Use 3956 for miles
     return c * r

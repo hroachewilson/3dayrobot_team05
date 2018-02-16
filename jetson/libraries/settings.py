@@ -1,6 +1,6 @@
 # Serial port settings
-CAR_SERIAL_PORT = '/dev/ttyUSB0'
-GPS_SERIAL_PORT = '/dev/ttyUSB1'
+CAR_SERIAL_PORT = '/dev/ttyUSB1'
+GPS_SERIAL_PORT = '/dev/ttyUSB0'
 
 # Compass rolling average
 ROLLING_AMOUNT = 4
