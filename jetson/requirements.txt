@@ -1,0 +1,2 @@
+FaBo9Axis_MPU9250
+smbus-cffi
