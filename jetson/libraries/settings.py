@@ -3,7 +3,7 @@ CAR_SERIAL_PORT = '/dev/ttyUSB1'
 GPS_SERIAL_PORT = '/dev/ttyUSB0'
 
 # Compass rolling average
-ROLLING_AMOUNT = 4
+ROLLING_AMOUNT = 2
 
 # Color thresholding
 RED_THRES_LOW = (0, 170, 100)
