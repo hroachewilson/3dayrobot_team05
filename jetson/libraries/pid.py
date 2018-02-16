@@ -23,7 +23,6 @@
 # version         :0.1
 # notes           :
 # python_version  :2.7
-# example 	  :https://github.com/ivmech/ivPID/blob/master/test_pid.py
 # ==============================================================================
 
 """Ivmech PID Controller is simple implementation of a Proportional-Integral-Derivative (PID) Controller in the Python Programming Language.
@@ -33,7 +32,8 @@ import time
 
 
 class PID:
-    """PID Controller
+    """
+    PID Controller
     """
 
     def __init__(self, P=0.2, I=0.0, D=0.0):
@@ -101,6 +101,8 @@ class PID:
             self.output = self.PTerm + \
                 (self.Ki * self.ITerm) + (self.Kd * self.DTerm)
 
+        return self.output
+
     def setKp(self, proportional_gain):
         """Determines how aggressively the PID reacts to the current error with setting Proportional Gain"""
         self.Kp = proportional_gain
@@ -130,3 +132,6 @@ class PID:
         Based on a pre-determined sampe time, the PID decides if it should compute or return immediately.
         """
         self.sample_time = sample_time
+
+    def setSetPoint(self, set_point):
+        self.SetPoint = set_point

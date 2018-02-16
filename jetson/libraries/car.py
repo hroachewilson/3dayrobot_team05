@@ -33,7 +33,7 @@ def steer(angle=0):
     Steer = float(angle)
 
 
-def accelerator(power=0):
+def acceleration(power=0):
     global Accelerator
     Accelerator = float(power)
 
