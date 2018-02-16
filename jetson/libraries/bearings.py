@@ -7,8 +7,8 @@ def coord_bearing_degrees(lat1, long1, lat2, long2):
 
     Formula:
 
-    theta = atan2(sin(Δlong).cos(lat2),
-                  cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(Δlong))
+    theta = atan2(sin(DELTAlong).cos(lat2),
+                  cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(DELTAlong))
     """
     lat1 = math.radians(lat1)
     lat2 = math.radians(lat2)
@@ -36,8 +36,8 @@ def coord_bearing_radians(lat1, long1, lat2, long2):
 
     Formula:
 
-    theta = atan2(sin(Δlong).cos(lat2),
-                  cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(Δlong))
+    theta = atan2(sin(DELTAlong).cos(lat2),
+                  cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(DELTAlong))
     """
     deg = coord_bearing_degrees(lat1, long1, lat2, long2)
     return math.radians(deg)
