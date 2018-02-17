@@ -1,10 +1,10 @@
 //#include <Servo.h>
 
-int Input_sensor = A0;
+int Input_sensor = A5;
 int prev_feedback;
-int Direction = 2;
+int Direction = 34;
 bool brake_state = 1;
-int braking_pin = 11;
+int braking_pin = 36;
 
 void braking(bool brake_state);
 
