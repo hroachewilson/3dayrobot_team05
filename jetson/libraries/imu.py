@@ -24,3 +24,11 @@ def getCompass():
     direction = math.degrees(direction)
     direction = (direction + 180) % 360
     return direction
+
+
+def get_yaw_roc():
+    """
+    Get yaw rate of change
+    """
+    gyro = imu.readGyro()
+    return gyro['z']
