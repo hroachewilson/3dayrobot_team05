@@ -1,13 +1,14 @@
 import copy
 import numpy as np
 import time
+
+import libraries.color_blob as lcolor
 import libraries.settings as lsettings
 import libraries.gps as gps
 import libraries.imu as imu
-# import libraries.car as car
+import libraries.car as car
 import libraries.bearings as bearings
 import libraries.pid as lpid
-
 import libraries.geometry as geo
 
 # Lat, Long
@@ -37,6 +38,25 @@ waypoints = [[-27.8552616667, 153.151291667],
 pid_steer = lpid.PID(P=2.0, I=0.001, D=0.001)
 
 
+def test_pid():
+    while True:
+        red_target = lcolor.get_largest_blob_x_y(
+            lsettings.RED_THRES_LOW, lsettings.RED_THRES_HIGH, radius=10)
+
+        # If there is a target
+        if red_target is not None:
+            # Error is the left or right from center
+            target_x, target_y = red_target
+            target_error = target_x - (lsettings.IMAGE_WIDTH / 2)
+
+            turn_strength_pid = pid_steer.update(target_error)
+
+            print('turn_strength_pid: ', turn_strength_pid,
+                  ', turn direction: ', 'left' if turn_strength_pid > 0 else 'right')
+
+        time.sleep(0.05)
+
+
 def follow_point(point):
     gps_success = False
     while not gps_success:
@@ -60,9 +80,24 @@ def follow_point(point):
         elif heading_error <= -180:
             heading_error = heading_error + 360
 
-        turn_strength_pid = pid_steer.update(heading_error)
+        # Color blob
+        red_target = lcolor.get_largest_blob_x_y(
+            lsettings.RED_THRES_LOW, lsettins.RED_THRES_HIGH, radius=30)
 
-        print('turn_strength_pid: ', turn_strength_pid, ', turn direction: ', 'left' if turn_strength_pid > 0 else 'right')
+        # If there is a target
+        if red_target is not None:
+            # Error is the left or right from center
+            target_x, target_y = red_target
+            target_error = target_x - (lsettings.IMAGE_WIDTH / 2)
+
+            turn_strength_pid = pid_steer.update(target_error)
+
+        else:
+            turn_strength_pid = pid_steer.update(heading_error)
+
+        # Positive is right
+        print('turn_strength_pid: ', turn_strength_pid,
+              ', turn direction: ', 'left' if turn_strength_pid > 0 else 'right')
 
         time.sleep(0.01)
 

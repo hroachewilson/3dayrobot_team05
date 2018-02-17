@@ -2,7 +2,7 @@ import cv2
 import imutils
 import numpy as np
 
-from settings import RED_THRES_LOW, RED_THRES_HIGH, IMAGE_WIDTH, IMAGE_HEIGHT
+from libraries.settings import RED_THRES_LOW, RED_THRES_HIGH, IMAGE_WIDTH, IMAGE_HEIGHT
 
 IMG_DEBUG = None
 CAMERA = cv2.VideoCapture(0)
