@@ -57,13 +57,7 @@ def follow_point(point1, point2):
         point1[0], point1[1], coord[0], coord[1])
     dist_to_p2 = bearings.coord_dist_meters(
         point2[0], point2[1], coord[0], coord[1])
-<<<<<<< HEAD
 
-
-=======
-
-
->>>>>>> 6b0457e4711fc2373d6670876b9f5b1efefaa730
     while dist_to_p1 > lsettings.DIST_THRES_METER or dist_to_p2 > lsettings.DIST_THRES_METER:
         # Calculate cross track distance
         cross_track_dist = geo.cross_track_distance(
@@ -76,7 +70,6 @@ def follow_point(point1, point2):
         )
 
         # Update PID and get desired error
-        # Scale to -180 -> 180
         desired_heading = pid_cross.update(cross_track_dist)
 
         # Get current coords long and lat
@@ -91,13 +84,13 @@ def follow_point(point1, point2):
         yaw_roc = imu.get_yaw_roc()
 
         # Second PID
-        error_heading = (actual_heading + desired_heading) - imu.getCompass()
+        # Subtracting angle and moding it
+        error_heading = (((actual_heading + desired_heading) % 360) - imu.getCompass()) % 360
 
         steering_tuned = pid_steer.update(error_heading, delta_term=yaw_roc)
-        steering_tuned = steering_tuned + 140
 
         # TODO: Scale steering_tuned
-        print ['left', 'right'][steering_tuned < 0], 'steering: ', steering_tuned, ', yaw_roc: ', yaw_roc, 'desired_heading: ', desired_heading
+        print['left', 'right'][steering_tuned < 0], 'steering: ', steering_tuned, ', yaw_roc: ', yaw_roc, 'desired_heading: ', desired_heading
 
         # Steering
         # car.steer(steering_tuned)
@@ -128,7 +121,3 @@ if __name__ == '__main__':
 
     # car.stop()
     # car.send()
-<<<<<<< HEAD
-=======
-
->>>>>>> 6b0457e4711fc2373d6670876b9f5b1efefaa730
