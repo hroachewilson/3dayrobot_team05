@@ -49,6 +49,7 @@ def follow_point(point):
         point[0], point[1], coord[0], coord[1])
 
     while dist_to_p > lsettings.DIST_THRES_METER:
+
         heading_want = bearings.coord_bearing_degrees(
             coord[0], coord[1], point[0], point[1])
         heading_actual = imu.getCompass()
@@ -59,9 +60,9 @@ def follow_point(point):
         elif heading_error <= -180:
             heading_error = heading_error + 360
 
-        turn_strength_pid = -pid_steer.update(heading_error)
+        turn_strength_pid = pid_steer.update(heading_error)
 
-        print('turn_strength_pid: ', turn_strength_pid, ', turn direction: ', 'left' if turn_strength_pid < 0 else 'right')
+        print('turn_strength_pid: ', turn_strength_pid, ', turn direction: ', 'left' if turn_strength_pid > 0 else 'right')
 
         time.sleep(0.01)
 
