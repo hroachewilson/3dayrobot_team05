@@ -13,7 +13,7 @@ import libraries.geometry as geo
 waypoints = [[-27.855488, 153.150894], [-27.855488, 153.150894]]
 
 pid_cross = lpid.PID(P=2.0, I=0.001, D=0.001)
-pid_steer = lpid.PID(P=1.5, T=0.001, D=0.002)
+pid_steer = lpid.PID(P=1.5, I=0.001, D=0.002)
 
 car.send()
 car.acceleration(25)
@@ -28,8 +28,8 @@ def follow_point(point1, point2):
     if point2 is None:
         point2 = point1
 
-    dist_to_p1 = coord_dist_meters(point1[0], point1[1], coord[0], coord[1])
-    dist_to_p2 = coord_dist_meters(point2[0], point2[1], coord[0], coord[1])
+    dist_to_p1 = bearings.coord_dist_meters(point1[0], point1[1], coord[0], coord[1])
+    dist_to_p2 = bearings.coord_dist_meters(point2[0], point2[1], coord[0], coord[1])
 
     while dist_to_p1 < lsettings.DIST_THRES_METER or dist_to_p2 < lsettings.DIST_THRES_METER:
         # Calculate cross track distance
@@ -42,27 +42,24 @@ def follow_point(point1, point2):
             coord[1]
         )
 
-        # Update PID
-        pid_cross.update(cross_track_dist)
-
-        # Get desired error
-        desired_heading = pid_cross.predict()
+        # Update PID and get desired error
+        desired_heading = pid_cross.update(cross_track_dist)
 
         # Get current coords long and lat
         # Calculate bearing
-        actual_heading = bearings.coord_bearing_degrees(coords[0], coords[1],  # Our location
-                                                        point[0], point[1])    # waypoint location
+        actual_heading = bearings.coord_bearing_degrees(coord[0], coord[1],      # Our location
+                                                        point1[0], point1[1])    # waypoint location
 
         # Get yaw rate of change
+	# TODO: SCALE yaw_roc
         yaw_roc = imu.get_yaw_roc()
 
         # Second PID
         error_heading = (actual_heading + desired_heading) - imu.getCompass()
 
-        pid_steer.update(error_heading, delta_term=yaw_roc)
+        steering_tuned = pid_steer.update(error_heading, delta_term=yaw_roc)
 
         # Steering
-        steering_tuned = pid_steer.predict()
         car.steer(steering_tuned)
         car.send()
 
