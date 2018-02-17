@@ -9,7 +9,11 @@ DIST_THRES_METER = 5
 # Compass rolling average
 ROLLING_AMOUNT = 1
 
+# Image properties
+IMAGE_WIDTH = 720
+IMAGE_HEIGHT = 720
 
 # Color thresholding
+RADIUS = 10
 RED_THRES_LOW = (160, 120, 20)
 RED_THRES_HIGH = (185, 220, 200)
