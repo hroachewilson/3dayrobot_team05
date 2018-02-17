@@ -1,31 +1,35 @@
-#include <Servo.h>
+//#include <Servo.h>
 
-int Input_sensor = A7;
+int Input_sensor = A0;
 int prev_feedback;
-int Direction = 52;
-byte gear_select;
-int gear;
+int Direction = 2;
+bool brake_state = 1;
+int braking_pin = 11;
 
-void gearSelect(int gearState);
+void braking(bool brake_state);
 
-Servo Actuator;
+//Servo Actuator;
 
 void setup() {
   // put your setup code here, to run once:
   pinMode(Direction, OUTPUT);
+  pinMode(braking_pin, OUTPUT);
+
+  
   Serial.begin(9600);
 
-  Actuator.attach(50);
-
+  //Actuator.attach(48);
 }
 
 void loop() {
   // put your main code here, to run repeatedly
+  moveActuator(0);
+  
   if (Serial.available() > 0) 
   {
     // read the incoming byte:
-    gear = Serial.read();
-    gearSelect(gear);
+    brake_state = Serial.read();
+    braking(brake_state);
   }
   
   //moveActuator(700);
@@ -41,38 +45,33 @@ void moveActuator(int newpos) {
   if (oldpos  > newpos ) 
   {
     Serial.print(" oldpos > newpos ");
-    Actuator.write(180);
+    //Actuator.write(1023);
     digitalWrite(Direction, HIGH);
+    analogWrite(braking_pin, 1023);
   } 
   else if (newpos   > oldpos) 
   {
     Serial.print(" newpos > oldpos ");
 
     digitalWrite(Direction, LOW);
-    Actuator.write(180);
+    //Actuator.write(1023);
+    analogWrite(braking_pin, 1023);
   }
 }
 
 
-void gearSelect(int gearState)
+void braking(bool brakeState)
 {
-  switch (gearState) 
+  switch (brakeState) 
   {
     case 1:
-      //Parking
-      moveActuator(700);
+      //Braking
+      moveActuator(1023);
       break;
-    case 2:
-      //Reverse
-      moveActuator(535);
+    case 0:
+      //No Braking
+      moveActuator(0);
       break;
-    case 3:
-      //Neutral
-      moveActuator(477);
-      break;
-    case 4:
-      //Drive
-      moveActuator(425);
     default:
       // statements
       return;
