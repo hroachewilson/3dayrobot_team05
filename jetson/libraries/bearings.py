@@ -25,7 +25,7 @@ def coord_bearing_degrees(lat1, long1, lat2, long2):
     # values from -180 to 180 which isn't what we want for a compass
     # beating, solution is to normalize it
     initial_bearing = math.degrees(initial_bearing)
-    compass_bearing = (initial_bearing + 360) % 360
+    compass_bearing = 180-initial_bearing
 
     return compass_bearing
 
@@ -59,3 +59,6 @@ def coord_dist_meters(lat1, lon1, lat2, lon2):
     c = 2 * math.asin(math.sqrt(a))
     r = 6371000  # Radius of earth in meters. Use 3956 for miles
     return c * r
+    
+def subtract_angles(a,b):
+    return a-b
