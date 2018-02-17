@@ -1,7 +1,7 @@
 import math
 
 
-def coord_bearing_degrees(lat1, long1, lat2, long2):
+def coord_bearing_degrees(lat2, long2, lat1, long1):
     """
     Calculates the bearing between two points. Returns in degrees.
 
@@ -59,6 +59,7 @@ def coord_dist_meters(lat1, lon1, lat2, lon2):
     c = 2 * math.asin(math.sqrt(a))
     r = 6371000  # Radius of earth in meters. Use 3956 for miles
     return c * r
-    
-def subtract_angles(a,b):
+
+
+def subtract_angles(a, b):
     return a-b
