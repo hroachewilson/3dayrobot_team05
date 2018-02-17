@@ -76,8 +76,7 @@ def follow_point(point1, point2):
         # Calculate bearing
         mid_point = geo.midpoint(point1[0], point1[1], point2[0], point2[1])
 
-        actual_heading = bearings.coord_bearing_degrees(coord[0], coord[1],      # Our location
-                                                        mid_point[0], mid_point[1])    # waypoint location
+        actual_heading = bearings.coord_bearing_degrees(mid_point[0], mid_point[1], coord[0], coord[1])
 
         # Get yaw rate of change
         # TODO: Scale yaw_roc to between 0 and 1
