@@ -69,6 +69,7 @@ if __name__ == '__main__':
         # Debug
         cv2.imshow('Original', frame_resized)
         cv2.imshow('HSV', frame_hsv)
+        cv2.imshow('Mask', mask)
 
         cv2.imshow('hsv_extractor', IMG_DEBUG)
 
