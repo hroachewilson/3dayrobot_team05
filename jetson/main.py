@@ -33,6 +33,7 @@ waypoints = [[-27.8552616667, 153.151291667],
              [-27.8553283333, 153.150986667],
              [-27.8552716667, 153.151021667],
              [-27.855235, 153.151121667]]
+waypoints.reverse()
 
 pid_cross = lpid.PID(P=2.0, I=0.001, D=0.001)
 pid_steer = lpid.PID(P=1.5, I=0.001, D=0.002)
@@ -81,12 +82,14 @@ def follow_point(point1, point2):
         # Get yaw rate of change
         # TODO: Scale yaw_roc to between 0 and 1
         yaw_roc = imu.get_yaw_roc()
+        yaw_roc = yaw_roc / 250
 
         # Second PID
         # Subtracting angle and moding it
         error_heading = (((actual_heading + desired_heading) % 360) - imu.getCompass()) % 360
 
         steering_tuned = pid_steer.update(error_heading, delta_term=yaw_roc)
+        steering_tuned = steering_tuned + 250
 
         # TODO: Scale steering_tuned
         print['left', 'right'][steering_tuned < 0], 'steering: ', steering_tuned, ', yaw_roc: ', yaw_roc, 'desired_heading: ', desired_heading

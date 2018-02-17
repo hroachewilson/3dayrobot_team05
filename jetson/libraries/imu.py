@@ -19,7 +19,7 @@ def getCompass():
     val = math.atan2(rolling[1],rolling[0])
 
     direction = 180-math.degrees(val)
-    return direction
+    return direction#+11
 
 
 

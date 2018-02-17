@@ -27,8 +27,10 @@ waypoints = [[-27.8552616667, 153.151291667],
              [-27.8553283333, 153.150986667],
              [-27.8552716667, 153.151021667],
              [-27.855235, 153.151121667]]
-             
-             
+#def gpsToCartisuin(gpsCoord):
+    
+#def angleCord(source,target):#source to target
+    
 def getCoords():
     gps_success = False
     while not gps_success:
@@ -46,8 +48,8 @@ def follow_point(point):
                                                          point[0], point[1])   # waypoint location
         coordsAngleError = bearings.subtract_angles(coordsDirection,imu.getCompass())
         
-        print("Current Compass: ",imu.getCompass()," Coord angle: ",coordsDirection," Steer Error: ",coordsAngleError," Distance to target: ",bearings.coord_dist_meters(coords[0], coords[1], point[0], point[1]))
-        
+        #print("Current Compass: ",imu.getCompass()," Coord angle: ",coordsDirection," Steer Error: ",coordsAngleError," Distance to target: ",bearings.coord_dist_meters(coords[0], coords[1], point[0], point[1]))
+        print(["left","right"][coordsAngleError>0])
         time.sleep(0.01)
 
 
