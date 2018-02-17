@@ -6,31 +6,41 @@ from settings import CAR_SERIAL_PORT
 
 car = serial.Serial()
 car.port = CAR_SERIAL_PORT
-car.baudrate = 19200
+car.baudrate = 9600
 car.open()
 
+Stop=0# 0:false 1:true
+Steer=0
+Acceleration=0
+Gear=0
+Brakes=0
+def send():
+    global Stop,Steer,Acceleration,Gear,Brakes 
+    car.write(':'.join([str(i) for i in [Stop,Steer,Acceleration,Gear,Brakes]]))
+    if Stop:
+        Stop=0
+    pass
 
 def stop():
-    car.write(b's')
+    global Stop
+    Stop=1
+    
 
 
 def steer(angle=0):
-    car.write(b"d")
-    car.write(struct.pack('>h',angle))
-
+    global Steer
+    Steer=angle
 def acceleration(power=0):#0-100
-    car.write(b'a')
-    car.write(struct.pack('<B',power))
-
-
-def gear(gear=1):  # p:1,r:2,d:3   ###MAYBE ADD DICTIONARY
-    car.write(b"g")
-    car.write(struct.pack('<B',gear))
-
+    global Acceleration
+    Acceleration=power
+def gear(gearV=1):  # p:1,r:2,d:3   ###MAYBE ADD DICTIONARY
+    global Gear
+    Gear=gearV
 def brakes(power=0):#0-100
-    car.write(b"b")
-    car.write(struct.pack('<B',power))
+    global Brakes
+    Brakes=power
 if __name__=="__main__":
     for i in range(1000):
         brakes(98)
         steer(100)
+        send()
