@@ -57,8 +57,13 @@ def follow_point(point1, point2):
         point1[0], point1[1], coord[0], coord[1])
     dist_to_p2 = bearings.coord_dist_meters(
         point2[0], point2[1], coord[0], coord[1])
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 6b0457e4711fc2373d6670876b9f5b1efefaa730
     while dist_to_p1 > lsettings.DIST_THRES_METER or dist_to_p2 > lsettings.DIST_THRES_METER:
         # Calculate cross track distance
         cross_track_dist = geo.cross_track_distance(
@@ -123,3 +128,7 @@ if __name__ == '__main__':
 
     # car.stop()
     # car.send()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b0457e4711fc2373d6670876b9f5b1efefaa730
