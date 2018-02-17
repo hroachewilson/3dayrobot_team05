@@ -7,7 +7,8 @@ GPS_SERIAL_PORT = '/dev/ttyUSB0'
 DIST_THRES_METER = 5
 
 # Compass rolling average
-ROLLING_AMOUNT = 3
+ROLLING_AMOUNT = 1
+
 
 # Color thresholding
 RED_THRES_LOW = (160, 120, 20)
