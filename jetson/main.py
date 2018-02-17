@@ -43,21 +43,28 @@ def follow_point(point1, point2):
         )
 
         # Update PID and get desired error
-        desired_heading = pid_cross.update(cross_track_dist)
+        # Scale to -180 -> 180
+        desired_heading = pid_cross.update(cross_track_dist)       
+        desired_heading = desired_heading - 180
 
         # Get current coords long and lat
         # Calculate bearing
+        mid_point = geo.midpoint(point1[0], point1[1], point2[0], point2[1])
+
         actual_heading = bearings.coord_bearing_degrees(coord[0], coord[1],      # Our location
-                                                        point1[0], point1[1])    # waypoint location
+                                                mid_point[0], mid_point[1])    # waypoint location
 
         # Get yaw rate of change
-	# TODO: SCALE yaw_roc
+	# TODO: Scale yaw_roc to between 0 and 1
         yaw_roc = imu.get_yaw_roc()
+        yaw_roc = yaw_roc
 
         # Second PID
-        error_heading = (actual_heading + desired_heading) - imu.getCompass()
+        error_heading = (actual_heading + desired_heading) - 180 - imu.getCompass()
 
         steering_tuned = pid_steer.update(error_heading, delta_term=yaw_roc)
+
+        # TODO: Scale steering_tuned
 
         # Steering
         car.steer(steering_tuned)
