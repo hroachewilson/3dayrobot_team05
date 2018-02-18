@@ -6,7 +6,8 @@ from libraries.settings import RED_THRES_LOW, RED_THRES_HIGH, IMAGE_WIDTH, IMAGE
 
 IMG_DEBUG = None
 CAMERA = cv2.VideoCapture(1)
-
+CAMERA.set(cv2.CAP_PROP_FRAME_HEIGHT, IMAGE_HEIGHT)
+CAMERA.set(cv2.CAP_PROP_FRAME_WIDTH, IMAGE_WIDTH)
 def get_largest_blob_x_y(low_thres, high_thres, radius=10):
     """
     Get largest blob between low and high thres, radius is arbitrary

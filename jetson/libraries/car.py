@@ -30,8 +30,8 @@ def stop():
 
 def steer(angle=0):
     angle=round(angle)
-    angle=min(90,angle)
-    angle=max(-90,angle)
+    angle=min(45,angle)
+    angle=max(-45,angle)
     global Steer
     Steer=angle+90
     

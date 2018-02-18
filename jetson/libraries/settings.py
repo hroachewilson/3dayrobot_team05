@@ -8,14 +8,14 @@ DIST_THRES_METER = 10
 
 
 #radius of trak used for GPS kill switch
-TRACK_RADIUS=120
+TRACK_RADIUS=1200
 
 # Compass rolling average
 ROLLING_AMOUNT = 1
 
 # Image properties
-IMAGE_WIDTH = 720
-IMAGE_HEIGHT = 720
+IMAGE_WIDTH = 1920
+IMAGE_HEIGHT = 1080
 
 # Color thresholding
 RADIUS = 10
