@@ -59,9 +59,9 @@ def test_pid():
 
 def steer_scale_value(val):
     """
-    Scales between 
+    Scales between
     """
-    return 90 + (math.atan(val) * (90 / (math.pi / 2)))
+    return 90 + math.atan(val) * (45 / (math.pi / 2))
 
 
 def follow_point(point):
@@ -92,7 +92,7 @@ def follow_point(point):
             lsettings.RED_THRES_LOW, lsettins.RED_THRES_HIGH, radius=30)
 
         # If there is a target
-        if red_target is not None:
+        if red_target[0] is not -1:
             # Error is the left or right from center
             target_x, target_y = red_target
             target_error = target_x - (lsettings.IMAGE_WIDTH / 2)
@@ -105,6 +105,10 @@ def follow_point(point):
         # Positive is right
         print('turn_strength_pid: ', turn_strength_pid,
               ', turn direction: ', 'left' if turn_strength_pid > 0 else 'right')
+
+        steering_scaled = steer_scale_value(turn_strength_pid)
+        car.steer(steering_scaled)
+        car.send()
 
         time.sleep(0.01)
 
