@@ -61,5 +61,3 @@ def coord_dist_meters(lat1, lon1, lat2, lon2):
     return c * r
 
 
-def subtract_angles(a, b):
-    return a-b

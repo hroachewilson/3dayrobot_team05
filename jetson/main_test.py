@@ -1,10 +1,10 @@
 import time
 import libraries.gps as gps
-import libraries.imu as imu
+#import libraries.imu as imu
 import libraries.car as car
 import libraries.bearings as bearings
 import libraries.pid as lpid
-import libraries.cv as cv
+import libraries.color_blob as cv
 from libraries.settings import *
 
 centerOfTrack=[-27.8556425,153.151405]
@@ -51,8 +51,10 @@ car.acceleration(1)
 
 
 def follow_blob():
-    while cv.are_blobs():
-        car.steer(cv.get_biggest_blob_x())
+    blob=cv.get_largest_blob_x_y()
+    while blob[0]!=-1:
+        car.steer(blob.x-960)
+        print(blob.x-960)
         car.send()
 
 
@@ -76,15 +78,14 @@ def follow_point(point):
             input()
         
         
-        ###########ADD BLOB IF STATMENT/DETECTION HERE
-        if cv.are_blobs():
-            follow_blob()
+        
+        follow_blob()
         ##  driveToBlob()   goto blob until blob dissapears then return to main loop
         
         # Calculate bearing
         coordsDirection = bearings.coord_bearing_degrees(coords[0], coords[1],  # Our location
                                                          point[0], point[1])   # waypoint location
-        coordsAngleError = bearings.subtract_angles(coordsDirection,imu.getCompass())#calculate steering error
+        coordsAngleError = coordsDirection-0#imu.getCompass()#calculate steering error
         
         #print("Current Compass: ",imu.getCompass()," Coord angle: ",coordsDirection," Steer Error: ",coordsAngleError," Distance to target: ",bearings.coord_dist_meters(coords[0], coords[1], point[0], point[1]))
         print("Steering error:",coordsAngleError)

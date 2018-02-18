@@ -7,7 +7,6 @@ from libraries.settings import RED_THRES_LOW, RED_THRES_HIGH, IMAGE_WIDTH, IMAGE
 IMG_DEBUG = None
 CAMERA = cv2.VideoCapture(1)
 
-
 def get_largest_blob_x_y(low_thres, high_thres, radius=10):
     """
     Get largest blob between low and high thres, radius is arbitrary
@@ -20,7 +19,7 @@ def get_largest_blob_x_y(low_thres, high_thres, radius=10):
     (grabbed, frame) = CAMERA.read()
 
     if not grabbed:
-        return None
+        return [-1,-1]
 
     frame_resized = cv2.resize(frame, (IMAGE_WIDTH, IMAGE_HEIGHT))
     frame_hsv = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2HSV)
@@ -42,12 +41,12 @@ def get_largest_blob_x_y(low_thres, high_thres, radius=10):
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
         except:
-            return None
+            return [-1,-1]
 
         if r >= radius:
             return center
 
-    return None
+    return [-1,-1]
 
 
 def on_mouse(event, x, y, flag, param):
