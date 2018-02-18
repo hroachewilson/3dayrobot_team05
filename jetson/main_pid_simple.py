@@ -1,3 +1,4 @@
+import math
 import copy
 import numpy as np
 import time
@@ -55,6 +56,12 @@ def test_pid():
                   ', turn direction: ', 'left' if turn_strength_pid > 0 else 'right')
 
         time.sleep(0.05)
+
+def steer_scale_value(val):
+    """
+    Scales between 
+    """
+    return 90 + (math.atan(val) * (90 / (math.pi / 2)))
 
 
 def follow_point(point):

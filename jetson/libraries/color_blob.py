@@ -5,7 +5,7 @@ import numpy as np
 from libraries.settings import RED_THRES_LOW, RED_THRES_HIGH, IMAGE_WIDTH, IMAGE_HEIGHT
 
 IMG_DEBUG = None
-CAMERA = cv2.VideoCapture(0)
+CAMERA = cv2.VideoCapture(1)
 
 
 def get_largest_blob_x_y(low_thres, high_thres, radius=10):
