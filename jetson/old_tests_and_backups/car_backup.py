@@ -1,6 +1,6 @@
 import struct
 import serial
-import time
+
 from settings import CAR_SERIAL_PORT
 
 
@@ -14,8 +14,8 @@ Steer=0
 Acceleration=0
 Brakes=0
 def send():
-    global Stop,Steer,Acceleration,Brakes
-    car.write(struct.pack("<BBBB",Stop,Steer,Acceleration,Brakes ))
+    global Stop,Steer,Acceleration,Gear,Brakes 
+    car.write(':'.join([str(i) for i in [Stop,Steer,Acceleration,Brakes]]))
     if Stop:
         Stop=0
     pass
@@ -35,13 +35,12 @@ def steer(angle=0):
     
 def acceleration(power=0):#0-100
     global Acceleration
-    Acceleration=min(max(power,0),1)
+    Acceleration=power
 def brakes(power=0):#0-100
     global Brakes
     Brakes=power
 if __name__=="__main__":
-    while True:
+    for i in range(1000):
         brakes(98)
-        steer(0)
+        steer(100)
         send()
-        time.sleep(0.01)
