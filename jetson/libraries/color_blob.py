@@ -2,9 +2,53 @@ import cv2
 import imutils
 import numpy as np
 
-from settings import RED_THRES_LOW, RED_THRES_HIGH
+from libraries.settings import RED_THRES_LOW, RED_THRES_HIGH, IMAGE_WIDTH, IMAGE_HEIGHT
 
 IMG_DEBUG = None
+CAMERA = cv2.VideoCapture(0)
+
+
+def get_largest_blob_x_y(low_thres, high_thres, radius=10):
+    """
+    Get largest blob between low and high thres, radius is arbitrary
+
+    :params low_thres: tuple
+    :params high_thres: tuple
+    :params radius: int
+    :return
+    """
+    (grabbed, frame) = CAMERA.read()
+
+    if not grabbed:
+        return None
+
+    frame_resized = cv2.resize(frame, (IMAGE_WIDTH, IMAGE_HEIGHT))
+    frame_hsv = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2HSV)
+
+    mask = cv2.inRange(frame_hsv, low_thres, high_thres)
+    mask = cv2.erode(mask, None, iterations=2)
+    mask = cv2.dilate(mask, None, iterations=2)
+
+    _, cnts, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
+                                  cv2.CHAIN_APPROX_SIMPLE)
+    center = None
+
+    if len(cnts) > 0:
+        c = max(cnts, key=cv2.contourArea)
+        ((x, y), r) = cv2.minEnclosingCircle(c)
+        M = cv2.moments(c)
+
+        try:
+            center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+
+        except:
+            return None
+
+        if r >= radius:
+            return center
+
+    return None
+
 
 def on_mouse(event, x, y, flag, param):
     global IMG_DEBUG, IMG_DEBUG_HSV
@@ -21,20 +65,18 @@ def on_mouse(event, x, y, flag, param):
 
 if __name__ == '__main__':
     # Grabs camera feed
-    camera = cv2.VideoCapture(1)
-
     cv2.namedWindow('hsv_extractor')
     cv2.setMouseCallback('hsv_extractor', on_mouse, 0)
 
     while True:
         # Grab frame
-        (grabbed, frame) = camera.read()
+        (grabbed, frame) = CAMERA.read()
 
         if not grabbed:
             break
 
         # Resize and convert to HSV
-        frame_resized = imutils.resize(frame, width=720)
+        frame_resized = cv2.resize(frame, (IMAGE_WIDTH, IMAGE_HEIGHT))
         frame_hsv = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2HSV)
 
         IMG_DEBUG = frame_resized.copy()
@@ -48,7 +90,7 @@ if __name__ == '__main__':
 
         # Find contours
         _, cnts, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
-                                cv2.CHAIN_APPROX_SIMPLE)
+                                      cv2.CHAIN_APPROX_SIMPLE)
         center = None
 
         # Only proceed if at least one contour was found
@@ -67,6 +109,7 @@ if __name__ == '__main__':
                 cv2.circle(frame_resized, center, 5, (0, 0, 255), -1)
 
         # Debug
+        print(get_largest_blob_x_y(RED_THRES_LOW, RED_THRES_HIGH))
         cv2.imshow('Original', frame_resized)
         cv2.imshow('HSV', frame_hsv)
         cv2.imshow('Mask', mask)
@@ -78,5 +121,5 @@ if __name__ == '__main__':
         if key == ord('q'):
             break
 
-    camera.release()
+    CAMERA.release()
     cv2.destroyAllWindows()
