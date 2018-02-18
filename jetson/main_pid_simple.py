@@ -61,7 +61,7 @@ def steer_scale_value(val):
     """
     Scales between
     """
-    return math.atan(val) * (90 / (math.pi / 2))
+    return 90 + math.atan(val) * (45 / (math.pi / 2))
 
 
 def follow_point(point):
